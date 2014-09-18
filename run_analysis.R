@@ -1,4 +1,4 @@
-
+# Load test training sets and activities
 
 training = read.csv("UCI HAR Dataset/train/X_train.txt", sep="", header=FALSE)
 training[,562] = read.csv("UCI HAR Dataset/train/Y_train.txt", sep="", header=FALSE)
@@ -14,9 +14,11 @@ features = read.csv("UCI HAR Dataset/features.txt", sep="", header=FALSE)
 features[,2] = gsub('-mean', 'Mean', features[,2])
 features[,2] = gsub('-std', 'Std', features[,2])
 features[,2] = gsub('[-()]', '', features[,2])
-Merge training and test sets together
+
+#Merge training and test sets together
 
 allData = rbind(training, testing)
+
 #Get only the data on mean and std. dev.
 
 colsWeWant <- grep(".Mean.|.Std.", features[,2])
@@ -41,7 +43,8 @@ currentActivity <- currentActivity + 1
 allData$activity <- as.factor(allData$activity)
 allData$subject <- as.factor(allData$subject)
 tidy = aggregate(allData, by=list(activity = allData$activity, subject=allData$subject), mean)
-Remove the subject and activity column, since a mean of those has no use
+
+#Remove the subject and activity column, since a mean of those has no use
 
 tidy[,90] = NULL
 tidy[,89] = NULL
